@@ -1,14 +1,12 @@
 echo 'Installing Please Wait'
 echo "=================================================="
 echo 'Setup Installer'
-sudo yum update
-sudo yum install deltarpm -y
 sudo yum install epel-release -y
+sudo yum install deltarpm -y
 sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y
 sudo yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm -y
 sudo curl -sL https://rpm.nodesource.com/setup_lts.x | sudo bash -
 sudo yum install yum-utils -y
-sudo yum update
 
 echo 'Install GIT'
 echo "=================================================="
@@ -163,3 +161,17 @@ sudo systemctl restart php74-php-fpm
 echo 'Install Composer'
 echo "=================================================="
 sudo curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+echo "Install Supervisor"
+echo "=================================================="
+sudo yum -y install supervisor
+sudo systemctl start supervisord
+sudo systemctl enable supervisord
+
+
+echo "Install Memcached"
+echo "=================================================="
+sudo yum install -y libevent libevent-devel
+sudo yum install -y memcached
+sudo systemctl start memcached
+sudo httpd -k restart
